@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quiz : Entrepôt de Données Moderne</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef2f7;
+      padding: 30px;
+    }
+    .quiz-box {
+      background: white;
+      border-radius: 12px;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    .question h3 {
+      margin-bottom: 10px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    button {
+      margin-top: 10px;
+      background: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .answer {
+      display: none;
+      margin-top: 5px;
+      color: green;
+      font-weight: bold;
+    }
+    .answer.incorrect {
+      color: red;
+    }
+    .feedback {
+      display: none;
+      margin-top: 5px;
+    }
+    .show-feedback {
+      display: block;
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-box">
+    <h1>Quiz : Entrepôt de Données Moderne</h1>
+
+    <div class="question">
+      <h3>1. Quelle est la principale différence entre un data lake et un data warehouse ?</h3>
+      <ul>
+        <li><input type="radio" name="q1" value="a"> a) Le data warehouse stocke uniquement des images</li>
+        <li><input type="radio" name="q1" value="b"> b) Le data lake nettoie automatiquement les données</li>
+        <li><input type="radio" name="q1" value="c"> c) Le data warehouse impose un schéma structuré, contrairement au data lake</li>
+        <li><input type="radio" name="q1" value="d"> d) Le data lake est plus rapide que le data warehouse</li>
+      </ul>
+      <div class="feedback" id="feedback-q1">Réponse incorrecte. La bonne réponse est : c) Le data warehouse impose un schéma structuré.</div>
+    </div>
+
+    <div class="question">
+      <h3>2. Pourquoi un data warehouse moderne doit-il être « serverless » ?</h3>
+      <ul>
+        <li><input type="radio" name="q2" value="a"> a) Pour mieux fonctionner hors ligne</li>
+        <li><input type="radio" name="q2" value="b"> b) Pour éviter la gestion des clusters et index</li>
+        <li><input type="radio" name="q2" value="c"> c) Pour limiter les utilisateurs</li>
+        <li><input type="radio" name="q2" value="d"> d) Pour réduire la bande passante</li>
+      </ul>
+      <div class="feedback" id="feedback-q2">Réponse incorrecte. La bonne réponse est : b) Pour éviter la gestion des clusters et index.</div>
+    </div>
+
+    <div class="question">
+      <h3>3. Pourquoi la visualisation est-elle essentielle dans un data warehouse ?</h3>
+      <ul>
+        <li><input type="radio" name="q3" value="a"> a) Pour produire automatiquement des vidéos</li>
+        <li><input type="radio" name="q3" value="b"> b) Pour décorer l’interface utilisateur</li>
+        <li><input type="radio" name="q3" value="c"> c) Pour permettre l’analyse et la prise de décision rapide</li>
+        <li><input type="radio" name="q3" value="d"> d) Pour stocker des images satellites</li>
+      </ul>
+      <div class="feedback" id="feedback-q3">Réponse incorrecte. La bonne réponse est : c) Pour permettre l’analyse et la prise de décision rapide.</div>
+    </div>
+
+    <div class="question">
+      <h3>4. Quel est l’objectif principal d’un data warehouse par rapport à un data lake ?</h3>
+      <ul>
+        <li><input type="radio" name="q4" value="a"> a) Archiver des fichiers anciens</li>
+        <li><input type="radio" name="q4" value="b"> b) Stocker les données brutes uniquement</li>
+        <li><input type="radio" name="q4" value="c"> c) Fournir des données propres, cohérentes et interrogeables</li>
+        <li><input type="radio" name="q4" value="d"> d) Exécuter des scripts Python sur des fichiers CSV</li>
+      </ul>
+      <div class="feedback" id="feedback-q4">Réponse incorrecte. La bonne réponse est : c) Fournir des données propres, cohérentes et interrogeables.</div>
+    </div>
+
+    <div class="question">
+      <h3>5. Quelles fonctionnalités doit offrir un data warehouse moderne ?</h3>
+      <ul>
+        <li><input type="radio" name="q5" value="a"> a) Calcul distribué uniquement</li>
+        <li><input type="radio" name="q5" value="b"> b) Requêtes lentes et archivage</li>
+        <li><input type="radio" name="q5" value="c"> c) Visualisation, streaming, ML intégré, sécurité d’entreprise</li>
+        <li><input type="radio" name="q5" value="d"> d) Traitement en batch uniquement</li>
+      </ul>
+      <div class="feedback" id="feedback-q5">Réponse incorrecte. La bonne réponse est : c) Visualisation, streaming, ML intégré, sécurité d’entreprise.</div>
+    </div>
+
+    <button onclick="checkAnswers()">Vérifier toutes les réponses</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function checkAnswers() {
+      let score = 0;
+      const totalQuestions = 5;
+      let feedbackMessages = [];
+
+      // Checking answers for each question
+      for (let i = 1; i <= totalQuestions; i++) {
+        const question = document.querySelector(`input[name="q${i}"]:checked`);
+        const feedback = document.getElementById(`feedback-q${i}`);
+        
+        // If no answer is selected
+        if (!question) {
+          feedbackMessages.push(`Vous n'avez pas répondu à la question ${i}.`);
+          feedback.classList.remove('show-feedback');
+        } else {
+          const userAnswer = question.value;
+          const correctAnswers = ['c', 'b', 'c', 'c', 'c']; // Correct answers for each question
+          if (userAnswer === correctAnswers[i - 1]) {
+            score++;
+            feedback.classList.add('show-feedback');
+            feedback.style.color = 'green';
+            feedback.textContent = `Bonne réponse !`;
+          } else {
+            feedback.classList.add('show-feedback');
+            feedback.style.color = 'red';
+            feedback.textContent = `Mauvaise réponse. La bonne réponse est : ${correctAnswers[i - 1]}.`;
+          }
+        }
+      }
+
+      // Show final score
+      const result = document.getElementById("result");
+      result.textContent = `Votre score est ${score} sur ${totalQuestions}.`;
+
+      // Display feedback messages if any question is missing a response
+      if (feedbackMessages.length > 0) {
+        result.textContent += `\n\n${feedbackMessages.join("\n")}`;
+      }
+    }
+  </script>
+</body>
+</html>
